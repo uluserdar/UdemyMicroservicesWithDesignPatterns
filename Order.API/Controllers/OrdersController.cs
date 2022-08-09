@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Order.API.DTOs;
 using Order.API.Models;
@@ -15,10 +16,12 @@ namespace Order.API.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public OrdersController(AppDbContext context)
+        public OrdersController(AppDbContext context, IPublishEndpoint publishEndpoint)
         {
             _context = context;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpPost]
@@ -53,13 +56,27 @@ namespace Order.API.Controllers
             var orderCreatedEvent = new OrderCreatedEvent()
             {
                 BuyerId = orderCreate.BuyerId,
-                OrderId=newOrder.Id,
-                Payment=new PaymentMessage
+                OrderId = newOrder.Id,
+                Payment = new PaymentMessage
                 {
-                    //CardName=
+                    CardName = orderCreate.Payment.CardName,
+                    CardNumber = orderCreate.Payment.CardNumber,
+                    Expiration = orderCreate.Payment.Expiration,
+                    Cvv = orderCreate.Payment.Cvv,
+                    TotalPrice = orderCreate.OrderItems.Sum(x => x.Price)
                 }
-
             };
+
+            orderCreate.OrderItems.ForEach(item =>
+            {
+                orderCreatedEvent.OrderItems.Add(new OrderItemMessage
+                {
+                    ProductId = item.ProductId,
+                    Count = item.Count
+                });
+            });
+
+            await _publishEndpoint.Publish(orderCreatedEvent);
 
             return Ok();
         }
