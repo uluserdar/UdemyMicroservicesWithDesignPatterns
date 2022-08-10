@@ -13,11 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Payment.API\Payment.API.csproj" />
+    <Folder Include="Consumer\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
 </Project>

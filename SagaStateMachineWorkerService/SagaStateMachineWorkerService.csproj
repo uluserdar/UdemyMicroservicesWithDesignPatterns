@@ -1,31 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>dotnet-SagaStateMachineWorkerService-A696DC72-7B10-4A8F-8188-3FF53B0A0B8A</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
+    <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.0.5" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.17" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.17">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.17">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Consumer\" />
-  </ItemGroup>
-
 </Project>
