@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MassTransit;
 using Shared;
+using Order.API.Consumer;
 
 namespace Order.API
 {
@@ -33,10 +34,15 @@ namespace Order.API
 
             services.AddMassTransit(x =>
             {
-              
+                x.AddConsumer<OrderRequestComplatedEventConsumer>();
+                x.AddConsumer<OrderRequestFailedEventConsumer>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host(Configuration.GetConnectionString("RabbitMQ"));
+                    cfg.ReceiveEndpoint(RabbitMqSettingsConst.OrderRequestComplatedEventQueueName, x =>
+                     x.ConfigureConsumer<OrderRequestComplatedEventConsumer>(context));
+                    cfg.ReceiveEndpoint(RabbitMqSettingsConst.OrderRequestFailedEventQueueName, x =>
+                     x.ConfigureConsumer<OrderRequestFailedEventConsumer>(context));
                     
                 });
             });

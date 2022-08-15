@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace SagaStateMachineWorkerService.Models
         public string CardNumber { get; set; }
         public string Expiration { get; set; }
         public string Cvv { get; set; }
+        [Column(TypeName ="decimal(18,2)")]
         public decimal TotalPrice { get; set; }
         public DateTime CreatedDate { get; set; }
 
@@ -29,7 +31,7 @@ namespace SagaStateMachineWorkerService.Models
             properties.ToList().ForEach(p =>
             {
                 var value = p.GetValue(this,null);
-                stringBuilder.Append($"{p.Name}:{value}");
+                stringBuilder.AppendLine($"{p.Name}:{value}");
             });
             stringBuilder.Append("--------------");
             return stringBuilder.ToString();

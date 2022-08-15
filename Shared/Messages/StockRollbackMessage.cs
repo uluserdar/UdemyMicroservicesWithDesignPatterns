@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared
+namespace Shared.Messages
 {
-    public class PaymentFailedEvent
+    public class StockRollbackMessage : IStockRollbackMessage
     {
-        public int OrderId { get; set; }
-        public string BuyerId { get; set; }
-        public string Message { get; set; }
         public List<OrderItemMessage> OrderItems { get; set; }
     }
 }
